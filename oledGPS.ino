@@ -39,48 +39,54 @@ TinyGPSPlus gps; // The GPS
 SoftwareSerial gpsSerial(rxGPSPin, txGPSPin); // Software serial interface for the GPS
 
 //// FUNCTIONS ////////////////////////////////////////////////////////////////
-// Displays information from the GPS
-void displayInfo() {
+// Initializes the oled display
+void initializeDisplay() {
+  display.begin();
+  display.fillScreen(BLACK);
+  display.setCursor(0,0);
+  display.setTextColor(OledTextColor);
+  display.setTextSize(1);
+  display.print("Zhenia's Arduino");
+  delay(1000);
+}
+// Displays basic information from the GPS unit
+void displayBasicInfo() {
   display.fillScreen(BLACK);
   display.setCursor(0, 0);
-
-  // if(gps.location.isUpdated()) {
-    display.println("GPS");
-    display.print("Lat: ");
-    display.println(gps.location.lat());
-    display.print("Lon: ");
-    display.println(gps.location.lng());
-    display.print("Sats: ");
-    display.println(gps.satellites.value());
-    display.print("Alt: ");
-    display.println(gps.altitude.feet());
-  // }
-
+  display.println("GPS");
+  display.print("Lat: ");
+  display.println(gps.location.lat());
+  display.print("Lon: ");
+  display.println(gps.location.lng());
+  display.print("Sats: ");
+  display.println(gps.satellites.value());
+  display.print("Alt: ");
+  display.println(gps.altitude.feet());
+}
+// Displays time and date from the GPS unit
+void displayTimeAndDate() {
+  display.fillScreen(BLACK);
+  display.setCursor(0, 0);
+  display.println("Current Time");
+  display.println(gps.time.hour() + ":" + gps.time.minute() + ":" + gps.time.second());
 }
 
 //// SETUP ////////////////////////////////////////////////////////////////////
 void setup() {
-  // put your main code here, to run once:
   Serial.begin(9600);
   Serial.println("Online");
 
   gpsSerial.begin(gpsBaud);
   Serial.println(TinyGPSPlus::libraryVersion());
 
-  display.begin();
-  display.fillScreen(BLACK);
-
-  display.setCursor(0,0);
-  display.setTextColor(OledTextColor);
-  display.setTextSize(1);
-  display.print("Zhenia's Arduino");
-  delay(1000);
-
+  initializeDisplay();
 }
 //// LOOP /////////////////////////////////////////////////////////////////////
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println(gps.charsProcessed());
-  displayInfo();
-  delay(3000);
+  while(gpsSerial.available()) {
+    gps.encode(gpsSerial.read());
+  }
+  if(gps.location.isUpdated() {
+	  displayInfo();
+  }
 }
