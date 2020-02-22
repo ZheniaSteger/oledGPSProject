@@ -87,6 +87,6 @@ void loop() {
     gps.encode(gpsSerial.read());
   }
   if(gps.location.isUpdated() {
-	  displayInfo();
+	  displayBasicInfo();
   }
 }
