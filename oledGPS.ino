@@ -88,5 +88,8 @@ void loop() {
   }
   if(gps.location.isUpdated() {
 	  displayBasicInfo();
+    delay(1500);
+    displayTimeAndDate();
+    delay(1500);
   }
 }
