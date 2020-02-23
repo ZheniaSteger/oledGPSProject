@@ -8,16 +8,16 @@
 
 //// DEFINES //////////////////////////////////////////////////////////////////
 // Arduino Pins for GPS
-#define rxGPSPin 0
-#define txGPSPin 1
+#define rxGPSPin 6
+#define txGPSPin 5
 #define gpsBaud  9600
 
 // Arduino Pins for OLED Screen
 #define sclk 13     // scl
 #define mosi 11     // sda
 #define cs   10     // cd
-#define rst  9      // dc
-#define dc   8      // rst
+#define dc   9      // rst
+#define rst  8      // dc
 
 // Colors
 #define	BLACK           0x0000
@@ -46,29 +46,40 @@ void initializeDisplay() {
   display.setCursor(0,0);
   display.setTextColor(OledTextColor);
   display.setTextSize(1);
-  display.print("Zhenia's Arduino");
+  printInColor("Zhenia's Arduino", RED);
   delay(1000);
 }
 // Displays basic information from the GPS unit
 void displayBasicInfo() {
   display.fillScreen(BLACK);
   display.setCursor(0, 0);
-  display.println("GPS");
-  display.print("Lat: ");
+  printInColor("GPS\n", GREEN);
+  printInColor("Lat: ", CYAN);
   display.println(gps.location.lat());
-  display.print("Lon: ");
+  printInColor("Lon: ", CYAN);
   display.println(gps.location.lng());
-  display.print("Sats: ");
+  printInColor("Sats: ", CYAN);
   display.println(gps.satellites.value());
-  display.print("Alt: ");
+  printInColor("Alt: ", CYAN);
   display.println(gps.altitude.feet());
 }
 // Displays time and date from the GPS unit
 void displayTimeAndDate() {
   display.fillScreen(BLACK);
   display.setCursor(0, 0);
-  display.println("Current Time");
-  display.println(gps.time.hour() + ":" + gps.time.minute() + ":" + gps.time.second());
+  printInColor("Current Time: \n", GREEN);
+
+  display.print(gps.time.hour() + 4);
+  display.print(":");
+  display.print(gps.time.minute());
+  display.print(":");
+  display.print(gps.time.second());
+}
+// Prints a line in a specified Color
+void printInColor(String text, uint16_t color) {
+  display.setTextColor(color);
+  display.print(text);
+  display.setTextColor(OledTextColor);
 }
 
 //// SETUP ////////////////////////////////////////////////////////////////////
@@ -86,8 +97,8 @@ void loop() {
   while(gpsSerial.available()) {
     gps.encode(gpsSerial.read());
   }
-  if(gps.location.isUpdated() {
-	  displayBasicInfo();
+  if(gps.location.isUpdated()) {
+    displayBasicInfo();
     delay(1500);
     displayTimeAndDate();
     delay(1500);
