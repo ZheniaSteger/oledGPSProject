@@ -8,8 +8,8 @@
 
 //// DEFINES //////////////////////////////////////////////////////////////////
 // Arduino Pins for GPS
-#define rxGPSPin 6
-#define txGPSPin 5
+#define txGPSPin 6
+#define rxGPSPin 5
 #define gpsBaud  9600
 
 // Arduino Pins for OLED Screen

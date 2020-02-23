@@ -1,5 +1,7 @@
 {
     "programmer": "AVR ISP",
     "board": "arduino:avr:nano",
-    "configuration": "cpu=atmega328"
+    "configuration": "cpu=atmega328",
+    "sketch": "oledGPS.ino",
+    "port": "COM6"
 }
